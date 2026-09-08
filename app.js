@@ -122,4 +122,20 @@ app.post("/add-comment/:id", (req, res) => {
     });
 });
 
+app.post("/delete-all", (req, res) => {
+  if (req.body.delete_all) {
+    const db = client.db();
+    
+    db.collection("books")
+      .deleteMany({})
+      .then(() => {
+        res.json({ state: "Barcha kitoblar muvaffaqiyatli o'chirildi!" });
+      })
+      .catch((err) => {
+        console.log("Xatolik:", err);
+        res.status(500).json({ state: "O'chirishda xatolik yuz berdi" });
+      });
+  }
+});
+
 module.exports = app;

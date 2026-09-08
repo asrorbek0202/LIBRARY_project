@@ -37,3 +37,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+
+const cleanAllBtn = document.getElementById("clean-all");
+
+if (cleanAllBtn) {
+  cleanAllBtn.addEventListener("click", function () {
+    if (confirm("Haqiqatdan ham barcha kitoblarni o'chirib tashlamoqchimisiz?")) {
+      axios
+        .post("/delete-all", { delete_all: true })
+        .then((response) => {
+          alert(response.data.state);
+          document.location.reload();
+        })
+        .catch((err) => {
+          console.error("Xatolik:", err);
+          alert("Xatolik yuz berdi!");
+        });
+    }
+  });
+}
