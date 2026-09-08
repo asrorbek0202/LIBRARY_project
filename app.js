@@ -85,4 +85,41 @@ app.post("/delete-book/:id", (req, res) => {
     });
 });
 
+app.get("/book/:id", (req, res) => {
+  const db = client.db();
+  const bookId = req.params.id;
+
+  db.collection("books")
+    .findOne({ _id: new ObjectId(bookId) })
+    .then((book) => {
+      if (!book) {
+        return res.status(404).send("Kitob topilmadi");
+      }
+      res.render("book-detail", { book: book });
+    })
+    .catch((err) => {
+      console.log("Xatolik:", err);
+      res.status(500).send("Bazada xatolik yuz berdi");
+    });
+});
+
+app.post("/add-comment/:id", (req, res) => {
+  const db = client.db();
+  const bookId = req.params.id;
+  const newComment = req.body.comment;
+
+  db.collection("books")
+    .updateOne(
+      { _id: new ObjectId(bookId) },
+      { $push: { comments: newComment } }
+    )
+    .then(() => {
+      res.json({ state: "success" });
+    })
+    .catch((err) => {
+      console.log("Sharh saqlashda xatolik:", err);
+      res.status(500).json({ state: "fail" });
+    });
+});
+
 module.exports = app;

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= book.title %> - Tafsilotlar</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/main.css">
+</head>
+<body class="bg-light">
+
+  <div class="container py-5" style="max-width: 800px;">
+    <a href="/" class="btn btn-outline-secondary mb-4">&larr; Ortga qaytish</a>
+
+    <div class="card shadow-sm mb-4">
+      <div class="row no-gutters">
+        <div class="col-md-5">
+          <img src="<%= book.imageUrl || '/images/badiiy.png' %>" class="card-img" alt="<%= book.title %>" style="height: 100%; object-fit: cover; min-height: 250px;">
+        </div>
+        <div class="col-md-7">
+          <div class="card-body">
+            <h3 class="card-title"><%= book.title %></h3>
+            <p class="card-text"><strong>Muallif:</strong> <%= book.author %></p>
+            <p class="card-text"><strong>Janr:</strong> <span class="badge badge-info"><%= book.genre %></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow-sm p-4">
+      <h4 class="mb-3">Sharhlar</h4>
+      
+      <form id="comment-form" class="mb-4">
+        <input type="hidden" id="book-id" value="<%= book._id %>">
+        <div class="form-group">
+          <textarea id="comment-input" class="form-control" rows="3" placeholder="Fikringizni qoldiring..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Yuborish</button>
+      </form>
+
+      <ul id="comment-list" class="list-group list-group-flush">
+        <% if (book.comments && book.comments.length > 0) { %>
+          <% book.comments.forEach(function(comment) { %>
+            <li class="list-group-item pl-0"><%= comment %></li>
+          <% }) %>
+        <% } else { %>
+          <li class="list-group-item pl-0 text-muted" id="no-comments">Hozircha sharhlar yo'q.</li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/browser.js"></script>
+</body>
+</html>

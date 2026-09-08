@@ -1,0 +1,26 @@
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-img-top {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.badge-info {
+    background-color: #17a2b8;
+    font-size: 0.85rem;
+    padding: 0.4em 0.6em;
+}
