@@ -28,5 +28,43 @@ app.get("/", (req, res) => {
     });
 });
 
+app.get("/add-book", (req, res) => {
+  res.render("add-book");
+});
+
+app.post("/add-book", (req, res) => {
+  const db = client.db();
+  const { title, author, genre } = req.body;
+
+  const lowerGenre = genre ? genre.toLowerCase().trim() : "";
+  let imageUrl = "/images/badiiy.png"; 
+
+  if (lowerGenre.includes("diniy") || lowerGenre.includes("islom")) {
+    imageUrl = "/images/diniy.png";
+  } else if (lowerGenre.includes("ilmiy") || lowerGenre.includes("ilm")) {
+    imageUrl = "/images/ilmiy.png";
+  } else if (lowerGenre.includes("motivatsiya") || lowerGenre.includes("biznes")) {
+    imageUrl = "/images/motivatsiya.png";
+  } else if (lowerGenre.includes("badiiy")) {
+    imageUrl = "/images/badiiy.png";
+  }
+
+  const newBook = {
+    title: title,
+    author: author,
+    genre: genre,
+    imageUrl: imageUrl
+  };
+
+  db.collection("books")
+    .insertOne(newBook)
+    .then(() => {
+      res.redirect("/");
+    })
+    .catch((err) => {
+      console.log("Xatolik:", err);
+      res.status(500).send("Kitobni saqlab bo'lmadi");
+    });
+});
 
 module.exports = app;
