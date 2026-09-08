@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const { ObjectId } = require("mongodb");
+
 
 
 const client = require("./server");
@@ -64,6 +66,22 @@ app.post("/add-book", (req, res) => {
     .catch((err) => {
       console.log("Xatolik:", err);
       res.status(500).send("Kitobni saqlab bo'lmadi");
+    });
+});
+
+
+app.post("/delete-book/:id", (req, res) => {
+  const db = client.db();
+  const bookId = req.params.id;
+
+  db.collection("books")
+    .deleteOne({ _id: new ObjectId(bookId) })
+    .then(() => {
+      res.redirect("/"); 
+    })
+    .catch((err) => {
+      console.log("O'chirishda xatolik:", err);
+      res.status(500).send("Kitobni o'chirishda xatolik yuz berdi");
     });
 });
 
